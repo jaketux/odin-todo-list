@@ -36,13 +36,46 @@ margin-top:20px;
 
 }
 
+.complete-todo{
+    text-decoration: line-through;
+    background-color:#dbfcdd;
+}
+
+.incomplete-todo{
+    background-color:#f8cece
+}
+
 .todo-grid{
     display:grid;
     width:600px;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(4, minmax(315px,500px));
     margin-left:50px;
-    gap:30px;
+    gap:35px;
 }
+
+.todo-card{
+    display:flex;
+    flex-direction:column;
+    border: var(--frame-border);
+    border-radius:15px;
+    width:275px;
+    padding:20px;
+}
+
+.todo-name, .todo-description,.todo-priority,.todo-status{
+    margin-bottom:7.5px;
+}
+
+.todo-duedate{margin-bottom:20px;}
+
+.todo-actions{
+    text-align:right;
+    
+}
+.todo-actions>.small-icon{
+    margin-right:5px;
+}
+
 .project-sidebar{
     grid-area: sidebar;
     border-top:var(--frame-border);
@@ -53,9 +86,13 @@ margin-top:20px;
 .project-sidebar-header, .projects-display-header, .sidebar-header-icon, .display-header-icon, .project-card{display:flex;
 justify-content:space-between;
 align-items:center;
-margin-right:20px;
+margin-right:10px;
 }
 
+.project-icon>.small-icon{
+    margin-left:5px;
+    margin-right:5px;
+}
 
 
 .project-display{

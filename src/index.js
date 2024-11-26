@@ -1,8 +1,10 @@
 import { el } from "date-fns/locale";
 import "./styles.css";
-import { format, toDate } from "date-fns";
+import { format, isToday, toDate } from "date-fns";
 import plusImage from "./images/plus.svg"; 
 import deleteImage from "./images/delete.svg"; 
+import pencilImage from "./images/pencil-outline.svg"; 
+import checkImage from "./images/check.svg"; 
 
 
 function projectModule(){
@@ -15,27 +17,40 @@ function projectModule(){
             description:"It's working!",
             priority: 1,
             status: "Incomplete",
-            dueDate: "2024-11-12"
+            dueDate: format(toDate("2026-12-06"), "dd/MM/yyyy")
+            },
+            {
+                name: "How good is this!?",
+                description:"It's working!",
+                priority: 1,
+                status: "Complete",
+                dueDate: format(toDate("2024-02-04"), "dd/MM/yyyy")
             },
             {
                 name: "How good is this!?",
                 description:"It's working!",
                 priority: 1,
                 status: "Incomplete",
-                dueDate: "2024-11-12"
-            },
-            {
-                name: "How good is this!?",
-                description:"It's working!",
-                priority: 1,
-                status: "Incomplete",
-                dueDate: "2024-11-12"
+                dueDate: format(toDate("1990-12-06"), "dd/MM/yyyy")
             }]
         }
         ,
         {
             "name": "Dj Khaled",
-            toDos: []
+            toDos: [{
+                name: "Another one",
+                description:"WE THE BEST MUSIC!",
+                priority: 1,
+                status: "Complete",
+                dueDate: "12-11-2024"
+            },
+            {
+                name: "Let's go golfing",
+                description:"It's working!",
+                priority: 1,
+                status: "Incomplete",
+                dueDate: "22-11-2024"
+            }]
         }
         
     ]
@@ -135,7 +150,19 @@ function toDoModule(){
         project.listOfProjects[projectIndex].toDos.splice(toDoIndex,1)
     }
 
-    return {createToDo, editToDo, removeToDo, toggleStatus}
+    function checkOverdue(projectIndex, toDoIndex){
+        let currentDate = new Date()
+        let projectDate = project.listOfProjects[projectIndex].toDos[toDoIndex].dueDate
+        let parsedCurrent = Date.parse(currentDate)
+        let parsedProject = Date.parse(projectDate)
+        if (parsedCurrent>parsedProject){
+            return "past"
+        } else {
+            return "future"
+        }  
+    }
+
+    return {createToDo, editToDo, removeToDo, toggleStatus,checkOverdue}
 }
 
 function displayModule(){
@@ -195,15 +222,17 @@ function displayModule(){
             projectCardIcon.classList.add('project-icon')
             const image3 = document.createElement("img")
             image3.classList.add("small-icon")
-            image3.src=deleteImage
+            image3.src=pencilImage
+            const image4 = document.createElement("img")
+            image4.classList.add("small-icon")
+            image4.src=deleteImage
             projectCardText.addEventListener("click",function(){
                 gridContainer.remove()
                 createDisplay(projectCard.id)
             })
-            projectCardIcon.addEventListener("click",function(){
+            image4.addEventListener("click",function(){
             gridContainer.remove()
             project.removeProject(projectCard.id)
-            console.log(project.listOfProjects)
             if (project.listOfProjects.length>=1){
                 createDisplay(0)
             } else if (project.listOfProjects.length===0){
@@ -214,43 +243,67 @@ function displayModule(){
             projectCard.appendChild(projectCardText)
             projectCard.appendChild(projectCardIcon)
             projectCardIcon.appendChild(image3)
+            projectCardIcon.appendChild(image4)
+
         }
         // to-do-cards creation
         const toDoGrid = document.createElement("div")
         toDoGrid.classList.add("todo-grid")
         projectDisplay.appendChild(toDoGrid)
-
         for (var i = 0; i<project.listOfProjects[number].toDos.length;i++){
             const toDoCard = document.createElement("div")
             toDoCard.id=i
             toDoCard.classList.add('todo-card')
             const toDoName = document.createElement("div")
             toDoName.classList.add('todo-name')
-            toDoName.textContent=project.listOfProjects[number].toDos[toDoCard.id].name
+            toDoName.innerHTML="<b>"+project.listOfProjects[number].toDos[toDoCard.id].name+"</b>"
             const toDoDescription = document.createElement("div")
             toDoDescription.classList.add('todo-description')
             toDoDescription.textContent=project.listOfProjects[number].toDos[toDoCard.id].description
             const toDoPriority = document.createElement("div")
             toDoPriority.classList.add('todo-priority')
             if(project.listOfProjects[number].toDos[toDoCard.id].priority === 1){
-                toDoPriority.textContent="High"
+                toDoPriority.innerHTML="<b>Priority:</b> High"
             } else if(project.listOfProjects[number].toDos[toDoCard.id].priority === 2){
-                toDoPriority.textContent="Medium"
+                toDoPriority.textContent="<b>Priority:</b>Medium"
             } else if(project.listOfProjects[number].toDos[toDoCard.id].priority === 3){
-                toDoPriority.textContent="Low"
+                toDoPriority.textContent="<b>Priority:</b>Low"
             }
             const toDoStatus = document.createElement("div")
             toDoStatus.classList.add('todo-status')
-            toDoStatus.textContent=project.listOfProjects[number].toDos[toDoCard.id].status
+            toDoStatus.innerHTML="<b>Status: </b> "+project.listOfProjects[number].toDos[toDoCard.id].status
+            if (project.listOfProjects[number].toDos[toDoCard.id].status === "Complete"){
+                toDoCard.classList.add('complete-todo')
+            }
             const toDoDueDate = document.createElement("div")
             toDoDueDate.classList.add('todo-duedate')
-            toDoDueDate.textContent=project.listOfProjects[number].toDos[toDoCard.id].dueDate
+            toDoDueDate.innerHTML="<b>Due Date: </b>"+project.listOfProjects[number].toDos[toDoCard.id].dueDate
+            let resultOfCheck = toDo.checkOverdue(number,toDoCard.id)
+            console.log(resultOfCheck)
+            if ((resultOfCheck === "past") && (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete")){
+                toDoCard.classList.add('incomplete-todo')
+            }
+            const toDoActions = document.createElement("div")
+            toDoActions.classList.add('todo-actions')
+            const image5 = document.createElement("img")
+            image5.classList.add("small-icon")
+            image5.src=checkImage
+            const image6 = document.createElement("img")
+            image6.classList.add("small-icon")
+            image6.src=pencilImage
+            const image7 = document.createElement("img")
+            image7.classList.add("small-icon")
+            image7.src=deleteImage
             toDoGrid.appendChild(toDoCard)
             toDoCard.appendChild(toDoName)
             toDoCard.appendChild(toDoDescription)
             toDoCard.appendChild(toDoPriority)
             toDoCard.appendChild(toDoStatus)
             toDoCard.appendChild(toDoDueDate)
+            toDoCard.appendChild(toDoActions)
+            toDoActions.appendChild(image5)            
+            toDoActions.appendChild(image6)
+            toDoActions.appendChild(image7)
         }
     }
         
@@ -285,8 +338,11 @@ function displayModule(){
     }
     
     return {createDisplay}
+    
 }
 
 const display = displayModule()
 
 display.createDisplay(0)
+
+
