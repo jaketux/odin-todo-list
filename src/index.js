@@ -144,6 +144,7 @@ function toDoModule(){
         } else if (project.listOfProjects[projectIndex].toDos[toDoIndex].status === "Complete"){
             project.listOfProjects[projectIndex].toDos[toDoIndex].status = "Incomplete"
         }
+        console.log(project.listOfProjects[projectIndex].toDos[toDoIndex].status)
     }
 
     function removeToDo(projectIndex, toDoIndex){
@@ -162,7 +163,7 @@ function toDoModule(){
         }  
     }
 
-    return {createToDo, editToDo, removeToDo, toggleStatus,checkOverdue}
+    return {createToDo, editToDo, removeToDo,checkOverdue, toggleStatus}
 }
 
 function displayModule(){
@@ -279,7 +280,6 @@ function displayModule(){
             toDoDueDate.classList.add('todo-duedate')
             toDoDueDate.innerHTML="<b>Due Date: </b>"+project.listOfProjects[number].toDos[toDoCard.id].dueDate
             let resultOfCheck = toDo.checkOverdue(number,toDoCard.id)
-            console.log(resultOfCheck)
             if ((resultOfCheck === "past") && (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete")){
                 toDoCard.classList.add('incomplete-todo')
             }
@@ -288,6 +288,12 @@ function displayModule(){
             const image5 = document.createElement("img")
             image5.classList.add("small-icon")
             image5.src=checkImage
+            image5.addEventListener("click",function(){
+                    toDo.toggleStatus(number, toDoCard.id)
+                    gridContainer.remove()
+                    createDisplay(number)
+   
+            })
             const image6 = document.createElement("img")
             image6.classList.add("small-icon")
             image6.src=pencilImage
