@@ -6,6 +6,8 @@ import deleteImage from "./images/delete.svg";
 import pencilImage from "./images/pencil-outline.svg"; 
 import checkImage from "./images/check.svg"; 
 import sortImage from "./images/sort.svg"; 
+import closeImage from "./images/close.svg"
+import saveImage from "./images/save.svg"
 
 
 function projectModule(){
@@ -13,47 +15,9 @@ function projectModule(){
     const listOfProjects = [
         {
             "name": "Today",
-            toDos: [{
-            name: "How good is this!?",
-            description:"It's working!",
-            priority: 1,
-            status: "Incomplete",
-            dueDate: format(toDate("2026-12-06"), "dd/MM/yyyy")
-            },
-            {
-                name: "How good is this!?",
-                description:"It's working!",
-                priority: 1,
-                status: "Complete",
-                dueDate: format(toDate("2024-02-04"), "dd/MM/yyyy")
-            },
-            {
-                name: "How good is this!?",
-                description:"It's working!",
-                priority: 1,
-                status: "Incomplete",
-                dueDate: format(toDate("1990-12-06"), "dd/MM/yyyy")
-            }]
+            toDos: []
         }
-        ,
-        {
-            "name": "Dj Khaled",
-            toDos: [{
-                name: "Another one",
-                description:"WE THE BEST MUSIC!",
-                priority: 1,
-                status: "Complete",
-                dueDate: "12-11-2024"
-            },
-            {
-                name: "Let's go golfing",
-                description:"It's working!",
-                priority: 1,
-                status: "Incomplete",
-                dueDate: "22-11-2024"
-            }]
-        }
-        
+        ,        
     ]
 
     function sortToDoPriority(projectIndex){
@@ -156,7 +120,7 @@ function toDoModule(){
         let projectDate = project.listOfProjects[projectIndex].toDos[toDoIndex].dueDate
         let parsedCurrent = Date.parse(currentDate)
         let parsedProject = Date.parse(projectDate)
-        if (parsedCurrent>parsedProject){
+        if (parsedProject>parsedCurrent){
             return "past"
         } else {
             return "future"
@@ -169,7 +133,9 @@ function toDoModule(){
 function displayModule(){
 
 
+
     function createDisplay(number){
+
         const bodyOfPage = document.querySelector("body")
         const gridContainer = document.createElement("div")
         gridContainer.classList.add("grid-container")
@@ -186,9 +152,11 @@ function displayModule(){
         image.src=plusImage
         const image2 = document.createElement("img")
         image2.classList.add("icon")
+        image2.classList.add("add-todo-icon")
         image2.src=plusImage
         const image8 = document.createElement("img")
         image8.classList.add("icon")
+        image8.classList.add("sort-todo-icon")
         image8.src=sortImage
         projectSidebar.classList.add("project-sidebar")
         const projectDisplay = document.createElement("div")
@@ -212,6 +180,8 @@ function displayModule(){
         gridContainer.appendChild(projectDisplay)
         projectSidebar.appendChild(projectSidebarHeader) 
         projectDisplay.appendChild(projectDisplayHeader)
+        //project modal section for new project
+  
         // sidebar-cards creation
         for (var i = 0; i<project.listOfProjects.length;i++){
             const projectCard = document.createElement("div")
@@ -224,9 +194,11 @@ function displayModule(){
             projectCardIcon.classList.add('project-icon')
             const image3 = document.createElement("img")
             image3.classList.add("small-icon")
+            image3.classList.add("rename-project-icon")
             image3.src=pencilImage
             const image4 = document.createElement("img")
             image4.classList.add("small-icon")
+            image4.classList.add("delete-project-icon")
             image4.src=deleteImage
             projectCardText.addEventListener("click",function(){
                 gridContainer.remove()
@@ -241,6 +213,17 @@ function displayModule(){
                 createEmptyDisplay()
             }
             })
+
+
+            image3.addEventListener('click', function(){
+                const projectModal = document.querySelector(".rename-project-modal")
+                const saveButtonRename = document.querySelector(".save-button-rename")
+                saveButtonRename.id = projectCard.id
+                projectModal.classList.add("show")
+
+            })
+
+
             projectSidebar.appendChild(projectCard)
             projectCard.appendChild(projectCardText)
             projectCard.appendChild(projectCardIcon)
@@ -252,6 +235,19 @@ function displayModule(){
         const toDoGrid = document.createElement("div")
         toDoGrid.classList.add("todo-grid")
         projectDisplay.appendChild(toDoGrid)
+        const newProjectButton = document.querySelector('.sidebar-header-icon')
+        const projectModal = document.querySelector('.new-project-modal')
+        newProjectButton.addEventListener('click', function(){
+            projectModal.classList.add('show')
+        })
+        const newToDoButton = document.querySelector('.add-todo-icon')
+        const newToDoSave = document.querySelector('.new-todo-save-icon')
+        
+        const newToDoModal = document.querySelector('.new-todo-modal')
+        newToDoButton.addEventListener('click', function(){
+            newToDoModal.classList.add('show')
+            newToDoSave.id = number
+        })
         for (var i = 0; i<project.listOfProjects[number].toDos.length;i++){
             const toDoCard = document.createElement("div")
             toDoCard.id=i
@@ -264,12 +260,12 @@ function displayModule(){
             toDoDescription.textContent=project.listOfProjects[number].toDos[toDoCard.id].description
             const toDoPriority = document.createElement("div")
             toDoPriority.classList.add('todo-priority')
-            if(project.listOfProjects[number].toDos[toDoCard.id].priority === 1){
+            if(project.listOfProjects[number].toDos[toDoCard.id].priority === "1"){
                 toDoPriority.innerHTML="<b>Priority:</b> High"
-            } else if(project.listOfProjects[number].toDos[toDoCard.id].priority === 2){
-                toDoPriority.textContent="<b>Priority:</b>Medium"
-            } else if(project.listOfProjects[number].toDos[toDoCard.id].priority === 3){
-                toDoPriority.textContent="<b>Priority:</b>Low"
+            } else if(project.listOfProjects[number].toDos[toDoCard.id].priority === "2"){
+                toDoPriority.innerHTML="<b>Priority:</b> Medium"
+            } else if(project.listOfProjects[number].toDos[toDoCard.id].priority === "3"){
+                toDoPriority.innerHTML="<b>Priority:</b> Low"
             }
             const toDoStatus = document.createElement("div")
             toDoStatus.classList.add('todo-status')
@@ -281,13 +277,14 @@ function displayModule(){
             toDoDueDate.classList.add('todo-duedate')
             toDoDueDate.innerHTML="<b>Due Date: </b>"+project.listOfProjects[number].toDos[toDoCard.id].dueDate
             let resultOfCheck = toDo.checkOverdue(number,toDoCard.id)
-            if ((resultOfCheck === "past") && (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete")){
+            if ((resultOfCheck === "future") && (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete")){
                 toDoCard.classList.add('incomplete-todo')
             }
             const toDoActions = document.createElement("div")
             toDoActions.classList.add('todo-actions')
             const image5 = document.createElement("img")
             image5.classList.add("small-icon")
+            image5.classList.add("mark-todo-complete-icon")
             image5.src=checkImage
             image5.addEventListener("click",function(){
                 toDo.toggleStatus(number, toDoCard.id)
@@ -308,10 +305,25 @@ function displayModule(){
             })
             const image6 = document.createElement("img")
             image6.classList.add("small-icon")
+            image6.classList.add("edit-todo-icon")
             image6.src=pencilImage
+            image6.addEventListener('click', function(){
+                const editToDoModal = document.querySelector(".edit-todo-modal")
+                const editToDoModalSave = document.querySelector(".edit-todo-save-icon")
+                const editToDoModalContainer = document.querySelector(".edit-todo-bottom-icon")
+                editToDoModalContainer.id = number
+                editToDoModalSave.id = toDoCard.id
+                editToDoModal.classList.add("show")
+            })
             const image7 = document.createElement("img")
             image7.classList.add("small-icon")
+            image7.classList.add("delete-todo-icon")
             image7.src=deleteImage
+            image7.addEventListener('click', function(){
+                toDo.removeToDo(number,toDoCard.id)
+                gridContainer.remove()
+                createDisplay(number)
+            })
             toDoGrid.appendChild(toDoCard)
             toDoCard.appendChild(toDoName)
             toDoCard.appendChild(toDoDescription)
@@ -322,7 +334,10 @@ function displayModule(){
             toDoActions.appendChild(image5)            
             toDoActions.appendChild(image6)
             toDoActions.appendChild(image7)
+
         }
+
+
     }
         
         function createEmptyDisplay(){
@@ -354,7 +369,8 @@ function displayModule(){
             gridContainer.appendChild(projectDisplay)
             projectSidebar.appendChild(projectSidebarHeader) 
     }
-    
+ 
+
     return {createDisplay}
     
 }
@@ -368,3 +384,98 @@ const display = displayModule()
 display.createDisplay(0)
 
 
+const saveButton = document.querySelector('.save-button')
+const projectInput = document.querySelector("#project-input")
+saveButton.addEventListener('click', function(){
+    const gridContainer = document.querySelector(".grid-container")
+    const projectModal = document.querySelector(".new-project-modal")
+
+    gridContainer.remove()
+
+    projectModal.classList.remove('show')
+    project.createProject(projectInput.value)
+    display.createDisplay(project.listOfProjects.length-1)
+    console.log(project.listOfProjects)
+})
+
+
+
+const closeButton = document.querySelector(".rename-close")
+    closeButton.addEventListener('click',function(){
+    const renameModal = document.querySelector(".rename-project-modal")
+    renameModal.classList.remove('show')
+})
+
+const closeButtonNew = document.querySelector(".new-project-close")
+    closeButtonNew.addEventListener('click',function(){
+    const projectModal = document.querySelector(".new-project-modal")
+    projectModal.classList.remove('show')
+})
+
+const saveButton2 = document.querySelector('.save-button-rename')
+const renameInput = document.querySelector("#rename-input")
+saveButton2.addEventListener('click', function(){
+    const renameModal = document.querySelector(".rename-project-modal")
+    const saveIcon = document.querySelector('.save-button-rename')
+const gridContainer = document.querySelector(".grid-container")
+gridContainer.remove()
+renameModal.classList.remove('show')
+project.renameProject(saveIcon.id, renameInput.value)
+display.createDisplay(saveIcon.id)
+console.log(project.listOfProjects)
+})
+
+
+const newToDoSave = document.querySelector('.new-todo-save-icon')
+
+newToDoSave.addEventListener('click', function(){
+    const toDo = toDoModule();
+    const newToDoModal = document.querySelector(".new-todo-modal")
+    const saveIcon = document.querySelector('.new-todo-save-icon')
+const gridContainer = document.querySelector(".grid-container")
+let newToDoName = document.querySelector("#name-input").value
+let newToDoDescription = document.querySelector("#description-input").value
+let newToDoPriority = document.querySelector("#priority-selector").value
+let newToDoStatus = document.querySelector("#status-selector").value
+let newToDoDate = document.querySelector("#due-date").value
+gridContainer.remove()
+newToDoModal.classList.remove('show')
+toDo.createToDo(newToDoName, newToDoDescription, newToDoPriority, newToDoStatus, newToDoDate, saveIcon.id )
+display.createDisplay(saveIcon.id)
+
+console.log(project.listOfProjects)
+})
+
+const closeButtonNewToDo = document.querySelector(".new-todo-close")
+closeButtonNewToDo.addEventListener('click',function(){
+    const newToDoModal = document.querySelector(".new-todo-modal")
+    newToDoModal.classList.remove('show')
+})
+
+const closeButtonEditToDo = document.querySelector(".edit-todo-close")
+closeButtonEditToDo.addEventListener('click',function(){
+    const editToDoModal = document.querySelector(".edit-todo-modal")
+    editToDoModal.classList.remove('show')
+})
+
+const editToDoSave = document.querySelector('.edit-todo-save-icon')
+
+editToDoSave.addEventListener('click', function(){
+    const toDo = toDoModule();
+    const editToDoModal = document.querySelector(".edit-todo-modal")
+    const saveIcon = document.querySelector('.edit-todo-save-icon')
+    const saveContainer = document.querySelector('.edit-todo-bottom-icon')
+
+const gridContainer = document.querySelector(".grid-container")
+let newToDoName = document.querySelector("#edit-name-input").value
+let newToDoDescription = document.querySelector("#edit-description-input").value
+let newToDoPriority = document.querySelector("#edit-priority-selector").value
+let newToDoStatus = document.querySelector("#edit-status-selector").value
+let newToDoDate = document.querySelector("#edit-due-date").value
+gridContainer.remove()
+editToDoModal.classList.remove('show')
+toDo.editToDo(saveContainer.id, saveIcon.id, newToDoName, newToDoDescription, newToDoPriority, newToDoStatus, newToDoDate,  )
+display.createDisplay(saveContainer.id)
+
+console.log(project.listOfProjects)
+})

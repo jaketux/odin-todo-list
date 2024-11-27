@@ -119,9 +119,14 @@ margin-right:10px;
 .project-card{
     display:flex;
     align-items:center;
-    font-size:26px;
+    font-size:20px;
     margin-left:20px;
     margin-bottom:30px;
+}
+
+.project-card-text{
+    width:225px;
+    overflow-wrap: break-word;
 }
 
 .icon{
@@ -136,3 +141,195 @@ margin-right:10px;
 .small-icon{
     height:25px;
 }
+
+.new-project-modal{
+ position:fixed;
+ top:0;
+ left:0;
+ height:100vh;
+ width:100vw;   
+ background-color:rgba(0,0,0,0.3);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ opacity:0;
+ pointer-events:none;
+ 
+}
+
+.new-project-modal.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+
+
+.new-project-modal-card{
+
+    height:200px;
+    width:600px;
+    background-color:white;
+    border-radius: 10px;
+    max-width:100%;
+    padding:30px;
+    box-shadow:0 2px 4px rgba(0,0,0,0.2)
+    
+}
+
+.new-project-modal-heading{
+    font-size:30px;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+.rename-project-modal{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    width:100vw;   
+    background-color:rgba(0,0,0,0.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    
+   }
+   
+   .rename-project-modal.show{
+       opacity:1;
+       pointer-events:auto;
+   }
+   
+   
+   
+   .rename-project-modal-card{
+   
+       height:200px;
+       width:600px;
+       background-color:white;
+       border-radius: 10px;
+       max-width:100%;
+       padding:30px;
+       box-shadow:0 2px 4px rgba(0,0,0,0.2)
+       
+   }
+   
+   .rename-project-modal-heading{
+       font-size:30px;
+       font-weight:700;
+       margin-bottom:30px;
+   }
+
+   .rename-project-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+.project-input-box>label{
+    font-size:24px;
+    font-weight:500;
+    margin-right:20px;
+}
+
+.rename-label{
+    margin-right:20px;
+}
+
+.new-project-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+.new-project-top-icon, .new-project-bottom-icon{
+    text-align:right;
+}
+.new-project-bottom-icon>.medium-icon{
+    margin-top:25px
+}
+.medium-icon{
+    height:45px;
+    
+}
+
+.project-input-box{
+    display:flex;
+    align-items:center;
+}
+
+#project-input,#rename-input, #name-input, #description-input, #edit-name-input, #edit-description-input{
+    height:30px;
+    width:350px;
+}
+
+
+.new-todo-modal, .edit-todo-modal{
+    position:fixed;
+    top:0;
+    left:0;
+    height:100vh;
+    width:100vw;   
+    background-color:rgba(0,0,0,0.3);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    
+   }
+   
+   .new-todo-modal.show, .edit-todo-modal.show{
+       opacity:1;
+       pointer-events:auto;
+   }
+   
+   
+   
+   .new-todo-modal-card, .edit-todo-modal-card{
+    display:flex;
+    flex-direction:column;
+    
+       height:400px;
+       width:700px;
+       background-color:white;
+       border-radius: 10px;
+       max-width:100%;
+       padding:30px;
+       box-shadow:0 2px 4px rgba(0,0,0,0.2)
+       
+   }
+   
+   .new-todo-modal-heading, .edit-todo-modal-heading{
+       font-size:30px;
+       font-weight:700;
+
+   }
+
+   .new-todo-header,.edit-todo-header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:30px;
+}
+
+.todo-name-label, .todo-description-label, .priority-selector-label, .status-selector-label, .date-selector-label, .edit-todo-name-label, .edit-todo-description-label, .edit-priority-selector-label, .edit-status-selector-label, .edit-date-selector-label{
+    margin-right:20px;
+}
+#name-input, #description-input, #priority-selector, #status-selector, #due-date, #edit-name-input, #edit-description-input, #edit-priority-selector, #edit-status-selector, #edit-due-date{
+    margin-bottom:20px;
+    border-radius:5px;
+    border:1px solid black
+}
+
+
+#priority-selector, #status-selector, #edit-priority-selector, #edit-status-selector{
+    height:25px;
+    width:150px;
+    text-align: center;
+    box-shadow:0 2px 4px rgba(0,0,0,0.2)
+}
+
+
+.new-todo-bottom-icon, .edit-todo-bottom-icon{
+    margin-top:20px;
+    text-align:right;}

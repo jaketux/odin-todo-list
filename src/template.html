@@ -18,6 +18,126 @@
             <div class="subheader-text">Productivity in motion.</div>
         </div>
     </div>
+    <div class="new-project-modal">
+        <div class="new-project-modal-card">
+            <div class="new-project-modal-top-icon">
+                <div class="new-project-header">
+                    <div class="new-project-modal-heading">New Project</div>
+                    <div class="new-project-top-icon"><img src="./images/close.svg" class="medium-icon new-project-close" alt="close-icon"></div>
+                </div>
+                <div class="project-input-box">
+                    <label for="project-label">Project Name:</label>
+                    <input type="text" id="project-input" maxlength="20" name="project-label" placeholder="Enter your Project Name" required>
+                </div>
+                <div class="new-project-bottom-icon">
+                    <img src="./images/save.svg" alt="save-icon" class="medium-icon save-button" style="height:55px">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rename-project-modal">
+        <div class="rename-project-modal-card">
+            <div class="rename-project-modal-top-icon">
+                <div class="rename-project-header">
+                    <div class="rename-project-modal-heading">Rename Project</div>
+                    <div class="rename-project-top-icon"><img src="./images/close.svg" class="medium-icon rename-close" alt="close-icon"></div>
+                </div>
+                <div class="rename-input-box">
+                    <label for="rename-label" class="rename-label">New Project Name:</label>
+                    <input type="text" id="rename-input" maxlength="20" name="rename-label" placeholder="Enter your New Project Name" required>
+                </div>
+                <div class="new-project-bottom-icon">
+                    <img src="./images/save.svg" alt="save-icon" class="medium-icon save-button-rename" style="height:55px">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="new-todo-modal">
+        <div class="new-todo-modal-card">
+                <div class="new-todo-header">
+                    <div class="new-todo-modal-heading">New Task</div>
+                    <div class="new-todo-top-icon"><img src="./images/close.svg" class="medium-icon new-todo-close" alt="close-icon"></div>
+                </div>
+                <div class="todo-parameters">
+                    <div class="todo-name-input-box">
+                        <label for="name-label" class="todo-name-label">Name:</label>
+                        <input type="text" id="name-input" maxlength="20" name="name-label" placeholder="Name" required>
+                    </div>
+                    <div class="todo-description-input-box">
+                        <label for="description-label" class="todo-description-label">Description:</label>
+                        <input type="text" id="description-input" maxlength="20" name="description-label" placeholder="Description" required>
+                    </div>
+                    <div class="todo-priority-input-box">
+                        <label for="priority-selector" class="priority-selector-label">Priority:</label>
+                        <select name="priority-selector" id="priority-selector">
+                            <option value="3">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="1">High</option>
+
+                        </select>
+                    </div>
+                    <div class="todo-status-input-box">
+                        <label for="status-selector" class="status-selector-label">Priority:</label>
+                        <select name="status-selector" id="status-selector">
+                            <option value="Incomplete">Incomplete</option>
+                            <option value="Complete">Complete</option>
+                        </select>
+                    </div>
+                    <div class="duedate-input-box">
+                        <label for="due-date" class="date-selector-label">Due Date:</label>
+                        <input type="date" id="due-date" name="due-date">
+                    </div>
+                    
+                    <div class="new-todo-bottom-icon">
+                        <img src="./images/save.svg" alt="save-icon" class="medium-icon new-todo-save-icon" style="height:55px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="edit-todo-modal">
+        <div class="edit-todo-modal-card">
+                <div class="edit-todo-header">
+                    <div class="edit-todo-modal-heading">Edit Task</div>
+                    <div class="edit-todo-top-icon"><img src="./images/close.svg" class="medium-icon edit-todo-close" alt="close-icon"></div>
+                </div>
+                <div class="edit-parameters">
+                    <div class="edit-name-input-box">
+                        <label for="edit-name-label" class="todo-name-label">Name:</label>
+                        <input type="text" id="edit-name-input" maxlength="20" name="edit-name-label" placeholder="Name" required>
+                    </div>
+                    <div class="edit-description-input-box">
+                        <label for="edit-description-label" class="todo-description-label">Description:</label>
+                        <input type="text" id="edit-description-input" maxlength="20" name="edit-description-label" placeholder="Description" required>
+                    </div>
+                    <div class="edit-priority-input-box">
+                        <label for="edit-priority-selector" class="priority-selector-label">Priority:</label>
+                        <select name="edit-priority-selector" id="edit-priority-selector">
+                            <option value="3">Low</option>
+                            <option value="2">Medium</option>
+                            <option value="1">High</option>
+
+                        </select>
+                    </div>
+                    <div class="edit-status-input-box">
+                        <label for="edit-status-selector" class="edit-status-selector-label">Priority:</label>
+                        <select name="edit-status-selector" id="edit-status-selector">
+                            <option value="Incomplete">Incomplete</option>
+                            <option value="Complete">Complete</option>
+                        </select>
+                    </div>
+                    <div class="edit-duedate-input-box">
+                        <label for="edit-due-date" class="edit-date-selector-label">Due Date:</label>
+                        <input type="date" id="edit-due-date" name="edit-due-date">
+                    </div>
+                    
+                    <div class="edit-todo-bottom-icon">
+                        <img src="./images/save.svg" alt="save-icon" class="medium-icon edit-todo-save-icon" style="height:55px">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
 
