@@ -1,11 +1,10 @@
 import { el } from "date-fns/locale";
 import "./styles.css";
-import { format, isToday, toDate } from "date-fns";
+import { format, isToday, toDate, parse, isBefore } from "date-fns";
 import plusImage from "./images/plus.svg"; 
 import deleteImage from "./images/delete.svg"; 
 import pencilImage from "./images/pencil-outline.svg"; 
 import checkImage from "./images/check.svg"; 
-import sortImage from "./images/sort.svg"; 
 import closeImage from "./images/close.svg"
 import saveImage from "./images/save.svg"
 
@@ -20,36 +19,30 @@ function projectModule(){
         ,        
     ]
 
-    function sortToDoPriority(projectIndex){
+    // I was going to implement a sort function but decided against it at this stage, I will revisit this in the future!
+    // function sortToDoPriority(projectIndex){
 
-        let project = {
-            name: listOfProjects[projectIndex].name,
-            toDos: listOfProjects[projectIndex].toDos.sort((a, b) => a.priority - b.priority)
-        }
-        projectByPriority = project
+    //     let project = {
+    //         name: listOfProjects[projectIndex].name,
+    //         toDos: listOfProjects[projectIndex].toDos.sort((a, b) => a.priority - b.priority)
+    //     }
+    //     projectByPriority = project
 
-       console.log(projectByPriority)
+    //    console.log(projectByPriority)
 
-    }    
-
-    function selectActiveProject(projectIndex){
-         currentProject = listOfProjects[projectIndex]
-        console.log(currentProject)
-    }    
+    // }    
 
 
-    let priorityToggle = false
+    // let priorityToggle = 0
 
-    let projectByPriority = 0
+    // let projectByPriority = 0
 
-    let currentProject = 0
-
-    function togglePriority(){
-        if (priorityToggle === false){
-            priorityToggle = true
-        } else if (priorityToggle === true)
-        {priorityToggle = false}
-    }
+    // function togglePriority(){
+    //     if (priorityToggle === 0){
+    //         priorityToggle = 1
+    //     } else if (priorityToggle === 1)
+    //     {priorityToggle = 0}
+    // }
 
     function createProject(name){
         let project = {
@@ -74,10 +67,9 @@ function projectModule(){
         console.log(project.listOfProjects)
     }
 
-    return {listOfProjects, sortToDoPriority, selectActiveProject, togglePriority, createProject, renameProject, removeProject, switchProject }
+    return {listOfProjects, createProject, renameProject, removeProject, switchProject }
 
 }
-
 
 function toDoModule(){
     
@@ -115,24 +107,25 @@ function toDoModule(){
         project.listOfProjects[projectIndex].toDos.splice(toDoIndex,1)
     }
 
-    function checkOverdue(projectIndex, toDoIndex){
-        let currentDate = new Date()
-        let projectDate = project.listOfProjects[projectIndex].toDos[toDoIndex].dueDate
-        let parsedCurrent = Date.parse(currentDate)
-        let parsedProject = Date.parse(projectDate)
-        if (parsedProject>parsedCurrent){
-            return "past"
+    function checkOverdue(projectIndex, toDoIndex) {
+        const currentDate = new Date();
+        const projectDate = parse(
+            project.listOfProjects[projectIndex].toDos[toDoIndex].dueDate,
+            "dd/MM/yyyy", 
+            new Date()
+        );
+    
+        if (isBefore(projectDate, currentDate)) {
+            return "past";
         } else {
-            return "future"
-        }  
+            return "future";
+        }
     }
 
     return {createToDo, editToDo, removeToDo,checkOverdue, toggleStatus}
 }
 
 function displayModule(){
-
-
 
     function createDisplay(number){
 
@@ -150,14 +143,12 @@ function displayModule(){
         const image = document.createElement("img")
         image.classList.add("icon")
         image.src=plusImage
+        image.style.cursor = "pointer";
         const image2 = document.createElement("img")
         image2.classList.add("icon")
         image2.classList.add("add-todo-icon")
         image2.src=plusImage
-        const image8 = document.createElement("img")
-        image8.classList.add("icon")
-        image8.classList.add("sort-todo-icon")
-        image8.src=sortImage
+        image2.style.cursor = "pointer";
         projectSidebar.classList.add("project-sidebar")
         const projectDisplay = document.createElement("div")
         projectDisplay.classList.add("project-display")
@@ -170,7 +161,6 @@ function displayModule(){
         projectDisplayHeaderIcon.classList.add("display-header-icon")
         projectDisplayHeader.appendChild(projectDisplayHeaderText)
         projectDisplayHeader.appendChild(projectDisplayHeaderIcon)
-        projectDisplayHeaderIcon.appendChild(image8)
         projectDisplayHeaderIcon.appendChild(image2)
         projectSidebarHeader.appendChild(projectSidebarHeaderText)
         projectSidebarHeader.appendChild(projectSidebarHeaderIcon)
@@ -180,8 +170,7 @@ function displayModule(){
         gridContainer.appendChild(projectDisplay)
         projectSidebar.appendChild(projectSidebarHeader) 
         projectDisplay.appendChild(projectDisplayHeader)
-        //project modal section for new project
-  
+
         // sidebar-cards creation
         for (var i = 0; i<project.listOfProjects.length;i++){
             const projectCard = document.createElement("div")
@@ -196,10 +185,12 @@ function displayModule(){
             image3.classList.add("small-icon")
             image3.classList.add("rename-project-icon")
             image3.src=pencilImage
+            image3.style.cursor = "pointer";
             const image4 = document.createElement("img")
             image4.classList.add("small-icon")
             image4.classList.add("delete-project-icon")
             image4.src=deleteImage
+            image4.style.cursor = "pointer";
             projectCardText.addEventListener("click",function(){
                 gridContainer.remove()
                 createDisplay(projectCard.id)
@@ -213,8 +204,6 @@ function displayModule(){
                 createEmptyDisplay()
             }
             })
-
-
             image3.addEventListener('click', function(){
                 const projectModal = document.querySelector(".rename-project-modal")
                 const saveButtonRename = document.querySelector(".save-button-rename")
@@ -222,8 +211,6 @@ function displayModule(){
                 projectModal.classList.add("show")
 
             })
-
-
             projectSidebar.appendChild(projectCard)
             projectCard.appendChild(projectCardText)
             projectCard.appendChild(projectCardIcon)
@@ -277,7 +264,7 @@ function displayModule(){
             toDoDueDate.classList.add('todo-duedate')
             toDoDueDate.innerHTML="<b>Due Date: </b>"+project.listOfProjects[number].toDos[toDoCard.id].dueDate
             let resultOfCheck = toDo.checkOverdue(number,toDoCard.id)
-            if ((resultOfCheck === "future") && (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete")){
+            if ((resultOfCheck === "past") && (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete")){
                 toDoCard.classList.add('incomplete-todo')
             }
             const toDoActions = document.createElement("div")
@@ -286,27 +273,19 @@ function displayModule(){
             image5.classList.add("small-icon")
             image5.classList.add("mark-todo-complete-icon")
             image5.src=checkImage
+            image5.style.cursor = "pointer";
+
             image5.addEventListener("click",function(){
                 toDo.toggleStatus(number, toDoCard.id)
                 gridContainer.remove()
                 createDisplay(number)
                 console.log(project.listOfProjects)
-                // if (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete"){
-                //     project.listOfProjects[number].toDos[toDoCard.id].status = "Complete"
-                //     gridContainer.remove()
-                //     createDisplay(number)
-                //     console.log(project.listOfProjects)
-                // } else if (project.listOfProjects[number].toDos[toDoCard.id].status === "Complete"){
-                //     project.listOfProjects[number].toDos[toDoCard.id].status = "Incomplete"
-                //     gridContainer.remove()
-                //     createDisplay(number)
-                //     console.log(project.listOfProjects)
-                // }
             })
             const image6 = document.createElement("img")
             image6.classList.add("small-icon")
             image6.classList.add("edit-todo-icon")
             image6.src=pencilImage
+            image6.style.cursor = "pointer";
             image6.addEventListener('click', function(){
                 const editToDoModal = document.querySelector(".edit-todo-modal")
                 const editToDoModalSave = document.querySelector(".edit-todo-save-icon")
@@ -319,6 +298,8 @@ function displayModule(){
             image7.classList.add("small-icon")
             image7.classList.add("delete-todo-icon")
             image7.src=deleteImage
+            image7.style.cursor = "pointer";
+
             image7.addEventListener('click', function(){
                 toDo.removeToDo(number,toDoCard.id)
                 gridContainer.remove()
@@ -337,7 +318,6 @@ function displayModule(){
 
         }
 
-
     }
         
         function createEmptyDisplay(){
@@ -355,9 +335,11 @@ function displayModule(){
             const image = document.createElement("img")
             image.classList.add("icon")
             image.src=plusImage
+            image.style.cursor = "pointer";
             const image2 = document.createElement("img")
             image2.classList.add("icon")
             image2.src=plusImage
+            image2.style.cursor = "pointer";
             projectSidebar.classList.add("project-sidebar")
             const projectDisplay = document.createElement("div")
             projectDisplay.classList.add("project-display")
@@ -368,6 +350,11 @@ function displayModule(){
             gridContainer.appendChild(projectSidebar)
             gridContainer.appendChild(projectDisplay)
             projectSidebar.appendChild(projectSidebarHeader) 
+            const newProjectButton = document.querySelector('.sidebar-header-icon')
+            const projectModal = document.querySelector('.new-project-modal')
+            newProjectButton.addEventListener('click', function(){
+                projectModal.classList.add('show')
+            })
     }
  
 

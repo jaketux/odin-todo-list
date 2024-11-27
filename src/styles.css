@@ -25,7 +25,7 @@
 
 .grid-container{
     display:grid;
-    height: 1000px;
+    height: 90vh;
 margin-top:20px;
     grid-template-columns: minmax(250px,1fr) 6fr;
     grid-template-rows:1fr;
@@ -333,3 +333,11 @@ margin-right:10px;
 .new-todo-bottom-icon, .edit-todo-bottom-icon{
     margin-top:20px;
     text-align:right;}
+
+.todo-description{
+    overflow-wrap: break-word;
+}
+
+.new-project-close, .save-button, .rename-close, .save-button-rename, .new-todo-close, .new-todo-save-icon, .edit-todo-close, .edit-todo-save-icon{
+    cursor: pointer;
+}
