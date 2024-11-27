@@ -5,6 +5,7 @@ import plusImage from "./images/plus.svg";
 import deleteImage from "./images/delete.svg"; 
 import pencilImage from "./images/pencil-outline.svg"; 
 import checkImage from "./images/check.svg"; 
+import sortImage from "./images/sort.svg"; 
 
 
 function projectModule(){
@@ -113,10 +114,9 @@ function projectModule(){
 
 }
 
+
 function toDoModule(){
     
-    const project = projectModule();
-
     function createToDo (name, description, priority, status, date, projectIndex){
 
         let toDo = {
@@ -168,9 +168,6 @@ function toDoModule(){
 
 function displayModule(){
 
-    const toDo = toDoModule();
-
-    const project = projectModule();
 
     function createDisplay(number){
         const bodyOfPage = document.querySelector("body")
@@ -190,6 +187,9 @@ function displayModule(){
         const image2 = document.createElement("img")
         image2.classList.add("icon")
         image2.src=plusImage
+        const image8 = document.createElement("img")
+        image8.classList.add("icon")
+        image8.src=sortImage
         projectSidebar.classList.add("project-sidebar")
         const projectDisplay = document.createElement("div")
         projectDisplay.classList.add("project-display")
@@ -202,6 +202,7 @@ function displayModule(){
         projectDisplayHeaderIcon.classList.add("display-header-icon")
         projectDisplayHeader.appendChild(projectDisplayHeaderText)
         projectDisplayHeader.appendChild(projectDisplayHeaderIcon)
+        projectDisplayHeaderIcon.appendChild(image8)
         projectDisplayHeaderIcon.appendChild(image2)
         projectSidebarHeader.appendChild(projectSidebarHeaderText)
         projectSidebarHeader.appendChild(projectSidebarHeaderIcon)
@@ -289,10 +290,21 @@ function displayModule(){
             image5.classList.add("small-icon")
             image5.src=checkImage
             image5.addEventListener("click",function(){
-                    toDo.toggleStatus(number, toDoCard.id)
-                    gridContainer.remove()
-                    createDisplay(number)
-   
+                toDo.toggleStatus(number, toDoCard.id)
+                gridContainer.remove()
+                createDisplay(number)
+                console.log(project.listOfProjects)
+                // if (project.listOfProjects[number].toDos[toDoCard.id].status === "Incomplete"){
+                //     project.listOfProjects[number].toDos[toDoCard.id].status = "Complete"
+                //     gridContainer.remove()
+                //     createDisplay(number)
+                //     console.log(project.listOfProjects)
+                // } else if (project.listOfProjects[number].toDos[toDoCard.id].status === "Complete"){
+                //     project.listOfProjects[number].toDos[toDoCard.id].status = "Incomplete"
+                //     gridContainer.remove()
+                //     createDisplay(number)
+                //     console.log(project.listOfProjects)
+                // }
             })
             const image6 = document.createElement("img")
             image6.classList.add("small-icon")
@@ -346,6 +358,10 @@ function displayModule(){
     return {createDisplay}
     
 }
+
+const toDo = toDoModule();
+
+const project = projectModule();
 
 const display = displayModule()
 
