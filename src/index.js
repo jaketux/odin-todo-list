@@ -9,15 +9,17 @@ import closeImage from "./images/close.svg"
 import saveImage from "./images/save.svg"
 
 
+
 function projectModule(){
     
-    const listOfProjects = [
+    const savedProjects = JSON.parse(localStorage.getItem("listOfProjects"));
+    const listOfProjects = savedProjects || [
         {
-            "name": "Today",
+            name: "Today",
             toDos: []
-        }
-        ,        
-    ]
+        },
+    ];
+
 
     // I was going to implement a sort function but decided against it at this stage, I will revisit this in the future!
     // function sortToDoPriority(projectIndex){
@@ -50,24 +52,33 @@ function projectModule(){
             toDos: []
         }
         listOfProjects.push(project)
+        saveToLocalStorage();
     } 
 
     function renameProject(projectIndex, name){
         listOfProjects[projectIndex].name = name
+        saveToLocalStorage();
     }
 
     function removeProject(projectIndex){
         listOfProjects.splice(projectIndex, 1)
         console.log(listOfProjects)
+        saveToLocalStorage();
     }
 
     function switchProject(projectIndex, newProjectIndex, toDoIndex){
         project.listOfProjects[newProjectIndex].toDos.push(project.listOfProjects[projectIndex].toDos[toDoIndex])
         project.listOfProjects[projectIndex].toDos.splice(toDoIndex, 1)
         console.log(project.listOfProjects)
+        saveToLocalStorage();
     }
 
-    return {listOfProjects, createProject, renameProject, removeProject, switchProject }
+    function saveToLocalStorage() {
+        localStorage.setItem("listOfProjects", JSON.stringify(project.listOfProjects));
+    }
+    
+
+    return {listOfProjects, createProject, renameProject, removeProject, switchProject, saveToLocalStorage }
 
 }
 
@@ -83,6 +94,7 @@ function toDoModule(){
             dueDate: format(toDate(date), "dd/MM/yyyy"),
         }
         project.listOfProjects[projectIndex].toDos.push(toDo)
+        project.saveToLocalStorage();
         console.log(project.listOfProjects)
     }
 
@@ -92,19 +104,23 @@ function toDoModule(){
         project.listOfProjects[projectIndex].toDos[toDoIndex].priority = newPriority
         project.listOfProjects[projectIndex].toDos[toDoIndex].status = newStatus
         project.listOfProjects[projectIndex].toDos[toDoIndex].dueDate = format(toDate(newDate), "dd/MM/yyyy")
+        project.saveToLocalStorage()
     }
 
     function toggleStatus(projectIndex,toDoIndex){
         if (project.listOfProjects[projectIndex].toDos[toDoIndex].status === "Incomplete"){
             project.listOfProjects[projectIndex].toDos[toDoIndex].status = "Complete"
+            project.saveToLocalStorage()
         } else if (project.listOfProjects[projectIndex].toDos[toDoIndex].status === "Complete"){
             project.listOfProjects[projectIndex].toDos[toDoIndex].status = "Incomplete"
+            project.saveToLocalStorage()
         }
         console.log(project.listOfProjects[projectIndex].toDos[toDoIndex].status)
     }
 
     function removeToDo(projectIndex, toDoIndex){
         project.listOfProjects[projectIndex].toDos.splice(toDoIndex,1)
+        project.saveToLocalStorage()
     }
 
     function checkOverdue(projectIndex, toDoIndex) {
@@ -286,6 +302,7 @@ function displayModule(){
             image6.classList.add("edit-todo-icon")
             image6.src=pencilImage
             image6.style.cursor = "pointer";
+
             image6.addEventListener('click', function(){
                 const editToDoModal = document.querySelector(".edit-todo-modal")
                 const editToDoModalSave = document.querySelector(".edit-todo-save-icon")
@@ -317,6 +334,7 @@ function displayModule(){
             toDoActions.appendChild(image7)
 
         }
+
 
     }
         
