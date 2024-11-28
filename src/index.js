@@ -386,8 +386,11 @@ const project = projectModule();
 
 const display = displayModule()
 
-display.createDisplay(0)
-
+if (project.listOfProjects.length > 0) {
+    display.createDisplay(0);
+} else {
+    display.createEmptyDisplay();
+}
 
 const saveButton = document.querySelector('.save-button')
 const projectInput = document.querySelector("#project-input")
